@@ -1,5 +1,6 @@
 import random
 from functools import wraps
+import time
 
 
 def raise_():
@@ -27,9 +28,30 @@ def raise_random(prob_of_raise=0.1):
     return decorator
 
 
-
 def delay(time_s=0.1):
-    pass
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            time.sleep(time_s)
+            return func(*args, **kwargs)
+        return wrapper
+
+    if time_s < 0:
+        raise ValueError("delay should have positive time_s")
+
+    return decorator
 
 def delay_random(max_time_s=0.1):
-    pass
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            rnd = random.random()
+            time_s = max_time_s * rnd
+            time.sleep(time_s)
+            return func(*args, **kwargs)
+        return wrapper
+
+    if max_time_s < 0:
+        raise ValueError("delay_random should have positive max_time_s")
+
+    return decorator
