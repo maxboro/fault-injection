@@ -1,3 +1,5 @@
+"""Exception-based fault injection helpers."""
+
 import random
 from functools import wraps
 from typing import Any, Callable
@@ -5,15 +7,22 @@ from typing import Any, Callable
 Decorator = Callable[[Callable[..., Any]], Callable[..., Any]]
 
 
-def raise_inline(msg: str ="raise_inline exception is raised", disable: bool = False) -> None:
+def raise_inline(msg: str = "raise_inline exception is raised", disable: bool = False) -> None:
+    """Raise ``RuntimeError`` immediately unless disabled.
+
+    Args:
+        msg: Exception message.
+        disable: If ``True``, raising is skipped.
+    """
     if not disable:
         raise RuntimeError(msg)
 
 
-def raise_(msg: str ="raise_ exception is raised", disable: bool = False) -> Decorator:
+def raise_(msg: str = "raise_ exception is raised", disable: bool = False) -> Decorator:
     """Return a decorator that always raises ``RuntimeError`` unless disabled.
 
     Args:
+        msg: Exception message. This is the first positional argument.
         disable: If ``True``, no exception is injected and the function executes.
     """
 
@@ -30,10 +39,20 @@ def raise_(msg: str ="raise_ exception is raised", disable: bool = False) -> Dec
 
 
 def raise_random_inline(
-    msg: str ="raise_random exception is raised",
+    msg: str = "raise_random exception is raised",
     prob_of_raise: float = 0.1,
     disable: bool = False,
 ) -> None:
+    """Raise ``RuntimeError`` with probability ``prob_of_raise`` unless disabled.
+
+    Args:
+        msg: Exception message.
+        prob_of_raise: Probability in ``[0, 1]`` used to raise an exception.
+        disable: If ``True``, raising is skipped.
+
+    Raises:
+        ValueError: If ``prob_of_raise`` is outside ``[0, 1]``.
+    """
     if not 0 <= prob_of_raise <= 1:
         raise ValueError("prob_of_raise should be 0-1")
     if not disable:
@@ -43,13 +62,14 @@ def raise_random_inline(
 
 
 def raise_random(
-    msg: str ="raise_random exception is raised",
+    msg: str = "raise_random exception is raised",
     prob_of_raise: float = 0.1,
     disable: bool = False,
 ) -> Decorator:
     """Return a decorator that raises ``RuntimeError`` with a set probability.
 
     Args:
+        msg: Exception message. This is the first positional argument.
         prob_of_raise: Probability in ``[0, 1]`` used to raise an exception.
         disable: If ``True``, exception injection is skipped.
 
