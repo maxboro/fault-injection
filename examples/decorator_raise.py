@@ -1,14 +1,14 @@
 """
-python -m examples.decorator_random_raise
+python -m examples.decorator_raise
 """
 import random
-from src.fault_injection import raise_random
+from src.fault_injection import raise_
 
-@raise_random(prob_of_raise=0.2)
+@raise_()
 def add(a, b):
     return a + b
 
-for _ in range(100):
+for _ in range(10):
     try:
         a = random.randint(1, 100)
         b = random.randint(1, 100)
