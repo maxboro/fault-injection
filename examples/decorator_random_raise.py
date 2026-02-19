@@ -2,7 +2,7 @@
 python -m examples.decorator_random_raise
 """
 import random
-from src.fault_injection.decorators import raise_random
+from src.fault_injection import raise_random
 
 @raise_random(prob_of_raise=0.2)
 def add(a, b):

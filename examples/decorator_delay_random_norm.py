@@ -3,7 +3,7 @@ python -m examples.decorator_delay_random_norm
 """
 import random
 import time
-from src.fault_injection.decorators import delay_random_norm
+from src.fault_injection import delay_random_norm
 
 @delay_random_norm(1, 0.1)
 def add_slowed(a, b):
