@@ -55,3 +55,20 @@ def delay_random(max_time_s=0.1):
         raise ValueError("delay_random should have positive max_time_s")
 
     return decorator
+
+def delay_random_norm(mean_time_s=0.3, std_time_s=0.1):
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            time_s = random.gauss(mean_time_s, std_time_s)
+            time_s = max(0, time_s)
+            time.sleep(time_s)
+            return func(*args, **kwargs)
+        return wrapper
+
+    if mean_time_s < 0:
+        raise ValueError("delay_random_norm should have positive mean_time_s")
+    if std_time_s < 0:
+        raise ValueError("delay_random_norm should have positive std_time_s")
+
+    return decorator
