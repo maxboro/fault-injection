@@ -1,11 +1,11 @@
 """
-python -m examples.decorator_random_raise
+python -m examples.inline_raise_random
 """
 import random
-from src.fault_injection import raise_random
+from src.fault_injection import raise_random_inline
 
-@raise_random(prob_of_raise=0.2)
 def add(a, b):
+    raise_random_inline(prob_of_raise=0.2)
     return a + b
 
 for _ in range(100):
