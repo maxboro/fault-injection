@@ -5,7 +5,12 @@ from typing import Any, Callable
 Decorator = Callable[[Callable[..., Any]], Callable[..., Any]]
 
 
-def raise_(disable: bool = False) -> Decorator:
+def raise_inline(msg: str ="raise_inline exception is raised", disable: bool = False) -> None:
+    if not disable:
+        raise RuntimeError(msg)
+
+
+def raise_(msg: str ="raise_ exception is raised", disable: bool = False) -> Decorator:
     """Return a decorator that always raises ``RuntimeError`` unless disabled.
 
     Args:
@@ -18,13 +23,27 @@ def raise_(disable: bool = False) -> Decorator:
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             if disable:
                 return func(*args, **kwargs)
-            raise RuntimeError("raise_ exception is raised")
+            raise RuntimeError(msg)
         return wrapper
 
     return decorator
 
 
+def raise_random_inline(
+    msg: str ="raise_random exception is raised",
+    prob_of_raise: float = 0.1,
+    disable: bool = False,
+) -> None:
+    if not 0 <= prob_of_raise <= 1:
+        raise ValueError("prob_of_raise should be 0-1")
+    if not disable:
+        rnd = random.random()
+        if rnd < prob_of_raise:
+            raise RuntimeError(msg)
+
+
 def raise_random(
+    msg: str ="raise_random exception is raised",
     prob_of_raise: float = 0.1,
     disable: bool = False,
 ) -> Decorator:
@@ -47,7 +66,7 @@ def raise_random(
             if not disable:
                 rnd = random.random()
                 if rnd < prob_of_raise:
-                    raise RuntimeError("random_raise exception is raised")
+                    raise RuntimeError(msg)
             return func(*args, **kwargs)
         return wrapper
 
