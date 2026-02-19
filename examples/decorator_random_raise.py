@@ -1,0 +1,19 @@
+"""
+python -m examples.decorator_random_raise
+"""
+import random
+from src.fault_injection.decorators import random_raise
+
+@random_raise(prob_of_raise=0.2)
+def add(a, b):
+    return a + b
+
+for _ in range(100):
+    try:
+        a = random.randint(1, 100)
+        b = random.randint(1, 100)
+        c = add(a, b)
+        print(c)
+    except Exception as error:
+        print(f"Error occurred: {error}")
+ 
