@@ -2,7 +2,16 @@ import random
 from functools import wraps
 
 
-def random_raise(prob_of_raise=0.1):
+def raise_():
+    def decorator(func):
+        @wraps(func)
+        def wrapper(*args, **kwargs):
+            raise RuntimeError("raise_ exception is raised")
+        return wrapper
+    return decorator
+
+
+def raise_random(prob_of_raise=0.1):
     def decorator(func):
         @wraps(func)
         def wrapper(*args, **kwargs):
@@ -16,3 +25,11 @@ def random_raise(prob_of_raise=0.1):
         raise ValueError("prob_of_raise should be 0-1")
 
     return decorator
+
+
+
+def delay(time_s=0.1):
+    pass
+
+def delay_random(max_time_s=0.1):
+    pass
