@@ -286,8 +286,6 @@ This project uses only the Python standard library for tests:
 python -m unittest discover -s tests -v
 ```
 
-No extra `PYTHONPATH` setup is needed with the root `fault_injection/` layout.
-
 ## Build and publish
 
 Build distributions:
