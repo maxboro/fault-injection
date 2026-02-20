@@ -1,5 +1,7 @@
 # fault-injection
 
+[![PyPI version](https://img.shields.io/pypi/v/fault-injection.svg)](https://pypi.org/project/fault-injection/)
+
 Lightweight fault injection helpers for Python functions.
 
 This project provides small decorators and inline helpers to intentionally inject failures or latency so you can test resiliency and error-handling paths.
@@ -23,6 +25,8 @@ This project provides small decorators and inline helpers to intentionally injec
 ## Installation
 
 Install from PyPI:
+
+https://pypi.org/project/fault-injection/
 
 ```bash
 python -m pip install fault-injection
