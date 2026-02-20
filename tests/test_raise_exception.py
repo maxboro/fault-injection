@@ -1,8 +1,14 @@
 import unittest
 from unittest.mock import patch
 
-from src.fault_injection import raise_, raise_inline, raise_random, raise_random_inline, \
-    raise_at_nth_call, raise_at_nth_call_inline
+from src.fault_injection import (
+    raise_,
+    raise_inline,
+    raise_random,
+    raise_random_inline,
+    raise_at_nth_call,
+    raise_at_nth_call_inline
+)
 
 
 class TestRaiseDecorator(unittest.TestCase):
