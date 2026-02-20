@@ -8,6 +8,7 @@ version = "0.1.0"
 description = "Lightweight fault injection helpers for Python functions."
 readme = "README.md"
 requires-python = ">=3.9"
+authors = [{ name = "Max B." }]
 license = { file = "LICENSE" }
 keywords = ["fault-injection", "testing", "resilience", "chaos-engineering"]
 classifiers = [
@@ -23,6 +24,11 @@ classifiers = [
     "Topic :: Software Development :: Testing",
 ]
 dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/maxboro/fault-injection"
+Repository = "https://github.com/maxboro/fault-injection"
+Issues = "https://github.com/maxboro/fault-injection/issues"
 
 [tool.setuptools.packages.find]
 include = ["fault_injection*"]
