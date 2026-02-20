@@ -71,7 +71,7 @@ def delay_at_nth_call_inline(
     if time_s < 0:
         raise ValueError("delay should have positive time_s")
     if n < 1 or not isinstance(n, int):
-        raise ValueError("n should be a positive interger.")
+        raise ValueError("n should be a positive integer.")
 
     if not hasattr(delay_at_nth_call_inline, "n_called_dict"):
         delay_at_nth_call_inline.n_called_dict = {}
@@ -105,7 +105,7 @@ def delay_at_nth_call(
     if time_s < 0:
         raise ValueError("delay should have positive time_s")
     if n < 1 or not isinstance(n, int):
-        raise ValueError("n should be a positive interger.")
+        raise ValueError("n should be a positive integer.")
 
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
