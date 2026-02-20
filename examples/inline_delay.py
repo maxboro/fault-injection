@@ -3,7 +3,7 @@ python -m examples.inline_delay
 """
 import random
 import time
-from src.fault_injection import delay_inline
+from fault_injection import delay_inline
 
 def add_slowed(a, b):
     delay_inline()

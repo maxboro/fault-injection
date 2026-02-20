@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 
-from src.fault_injection import (
+from fault_injection import (
     raise_,
     raise_inline,
     raise_random,
@@ -65,7 +65,7 @@ class TestRaiseRandomDecorator(unittest.TestCase):
             raise_random(prob_of_raise=1.01)
 
     def test_raise_random_raises_when_random_value_is_below_threshold(self):
-        with patch("src.fault_injection.raise_exception.random.random", return_value=0.19):
+        with patch("fault_injection.raise_exception.random.random", return_value=0.19):
             @raise_random(prob_of_raise=0.2)
             def add(a, b):
                 return a + b
@@ -74,7 +74,7 @@ class TestRaiseRandomDecorator(unittest.TestCase):
                 add(1, 2)
 
     def test_raise_random_uses_custom_message(self):
-        with patch("src.fault_injection.raise_exception.random.random", return_value=0.1):
+        with patch("fault_injection.raise_exception.random.random", return_value=0.1):
             @raise_random(msg="random custom message", prob_of_raise=0.2)
             def add(a, b):
                 return a + b
@@ -83,7 +83,7 @@ class TestRaiseRandomDecorator(unittest.TestCase):
                 add(1, 2)
 
     def test_raise_random_calls_wrapped_function_when_random_value_is_above_threshold(self):
-        with patch("src.fault_injection.raise_exception.random.random", return_value=0.9):
+        with patch("fault_injection.raise_exception.random.random", return_value=0.9):
             @raise_random(prob_of_raise=0.2)
             def add(a, b):
                 return a + b
@@ -92,7 +92,7 @@ class TestRaiseRandomDecorator(unittest.TestCase):
 
     def test_raise_random_disable_skips_random_and_raising(self):
         with patch(
-            "src.fault_injection.raise_exception.random.random",
+            "fault_injection.raise_exception.random.random",
             side_effect=AssertionError("random.random should not be called when disabled"),
         ):
             @raise_random(prob_of_raise=1.0, disable=True)
@@ -111,22 +111,22 @@ class TestRaiseRandomInline(unittest.TestCase):
             raise_random_inline(prob_of_raise=1.01)
 
     def test_raise_random_inline_raises_when_random_value_is_below_threshold(self):
-        with patch("src.fault_injection.raise_exception.random.random", return_value=0.19):
+        with patch("fault_injection.raise_exception.random.random", return_value=0.19):
             with self.assertRaisesRegex(RuntimeError, "raise_random exception is raised"):
                 raise_random_inline(prob_of_raise=0.2)
 
     def test_raise_random_inline_uses_custom_message(self):
-        with patch("src.fault_injection.raise_exception.random.random", return_value=0.19):
+        with patch("fault_injection.raise_exception.random.random", return_value=0.19):
             with self.assertRaisesRegex(RuntimeError, "inline random custom message"):
                 raise_random_inline(msg="inline random custom message", prob_of_raise=0.2)
 
     def test_raise_random_inline_noop_when_random_value_is_above_threshold(self):
-        with patch("src.fault_injection.raise_exception.random.random", return_value=0.9):
+        with patch("fault_injection.raise_exception.random.random", return_value=0.9):
             self.assertIsNone(raise_random_inline(prob_of_raise=0.2))
 
     def test_raise_random_inline_disable_skips_random_and_raising(self):
         with patch(
-            "src.fault_injection.raise_exception.random.random",
+            "fault_injection.raise_exception.random.random",
             side_effect=AssertionError("random.random should not be called when disabled"),
         ):
             self.assertIsNone(raise_random_inline(prob_of_raise=1.0, disable=True))

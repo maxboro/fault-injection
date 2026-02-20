@@ -2,7 +2,7 @@
 python -m examples.inline_raise_nth_multiple
 """
 import random
-from src.fault_injection import raise_at_nth_call_inline
+from fault_injection import raise_at_nth_call_inline
 
 def add(a, b):
     raise_at_nth_call_inline(n=1, func_id=1)

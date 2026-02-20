@@ -3,7 +3,7 @@ python -m examples.decorator_delay_nth
 """
 import random
 import time
-from src.fault_injection import delay_at_nth_call
+from fault_injection import delay_at_nth_call
 
 @delay_at_nth_call(time_s=0.5, n=3)
 def add_slowed(a, b):

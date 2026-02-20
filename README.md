@@ -16,16 +16,30 @@ This project provides small decorators and inline helpers to intentionally injec
 
 ## Project structure
 
-- `src/fault_injection/`: library code
+- `fault_injection/`: library code
 - `examples/`: runnable examples
 - `tests/`: unit tests (`unittest` + standard library only)
 
+## Installation
+
+Install from PyPI:
+
+```bash
+python -m pip install fault-injection
+```
+
+For local development from this repo:
+
+```bash
+python -m pip install -e .
+```
+
 ## Usage
 
-Import APIs from `src.fault_injection`:
+Import APIs from `fault_injection`:
 
 ```python
-from src.fault_injection import (
+from fault_injection import (
     raise_,
     raise_inline,
     raise_at_nth_call,
@@ -46,7 +60,7 @@ from src.fault_injection import (
 ### `raise_`
 
 ```python
-from src.fault_injection import raise_
+from fault_injection import raise_
 
 @raise_(msg="decorator failure")
 def do_work():
@@ -59,7 +73,7 @@ do_work()
 ### `raise_inline`
 
 ```python
-from src.fault_injection import raise_inline
+from fault_injection import raise_inline
 
 def do_work():
     raise_inline(msg="inline failure")
@@ -72,7 +86,7 @@ do_work()
 ### `raise_at_nth_call`
 
 ```python
-from src.fault_injection import raise_at_nth_call
+from fault_injection import raise_at_nth_call
 
 @raise_at_nth_call(msg="raise on third call", n=3, func_id=1)
 def do_work():
@@ -86,7 +100,7 @@ do_work()  # 3rd call: raises RuntimeError
 ### `raise_at_nth_call_inline`
 
 ```python
-from src.fault_injection import raise_at_nth_call_inline
+from fault_injection import raise_at_nth_call_inline
 
 def do_work():
     raise_at_nth_call_inline(msg="raise on second call", n=2, func_id=9)
@@ -96,7 +110,7 @@ def do_work():
 ### `raise_random`
 
 ```python
-from src.fault_injection import raise_random
+from fault_injection import raise_random
 
 @raise_random(msg="random decorator failure", prob_of_raise=0.2)
 def do_work():
@@ -109,7 +123,7 @@ do_work()
 ### `raise_random_inline`
 
 ```python
-from src.fault_injection import raise_random_inline
+from fault_injection import raise_random_inline
 
 def do_work():
     raise_random_inline(msg="random inline failure", prob_of_raise=0.2)
@@ -119,7 +133,7 @@ def do_work():
 ### `delay`
 
 ```python
-from src.fault_injection import delay
+from fault_injection import delay
 
 @delay(time_s=0.5)
 def do_work():
@@ -132,7 +146,7 @@ print(do_work())
 ### `delay_inline`
 
 ```python
-from src.fault_injection import delay_inline
+from fault_injection import delay_inline
 
 def do_work():
     delay_inline(time_s=0.5)
@@ -142,7 +156,7 @@ def do_work():
 ### `delay_at_nth_call`
 
 ```python
-from src.fault_injection import delay_at_nth_call
+from fault_injection import delay_at_nth_call
 
 @delay_at_nth_call(time_s=0.5, n=3, func_id=1)
 def do_work():
@@ -156,7 +170,7 @@ do_work()  # 3rd call: sleeps 0.5s, then returns
 ### `delay_at_nth_call_inline`
 
 ```python
-from src.fault_injection import delay_at_nth_call_inline
+from fault_injection import delay_at_nth_call_inline
 
 def do_work():
     delay_at_nth_call_inline(time_s=0.5, n=2, func_id=9)
@@ -166,7 +180,7 @@ def do_work():
 ### `delay_random`
 
 ```python
-from src.fault_injection import delay_random
+from fault_injection import delay_random
 
 @delay_random(max_time_s=0.5)
 def do_work():
@@ -179,7 +193,7 @@ print(do_work())
 ### `delay_random_inline`
 
 ```python
-from src.fault_injection import delay_random_inline
+from fault_injection import delay_random_inline
 
 def do_work():
     delay_random_inline(max_time_s=0.5)
@@ -189,7 +203,7 @@ def do_work():
 ### `delay_random_norm`
 
 ```python
-from src.fault_injection import delay_random_norm
+from fault_injection import delay_random_norm
 
 @delay_random_norm(mean_time_s=0.3, std_time_s=0.1)
 def do_work():
@@ -202,7 +216,7 @@ print(do_work())
 ### `delay_random_norm_inline`
 
 ```python
-from src.fault_injection import delay_random_norm_inline
+from fault_injection import delay_random_norm_inline
 
 def do_work():
     delay_random_norm_inline(mean_time_s=0.3, std_time_s=0.1)
@@ -240,7 +254,7 @@ delay_inline(0.5, disable=True)
 
 ## Run examples
 
-From repository root:
+From repository root (after `python -m pip install -e .`):
 
 ```bash
 python -m examples.decorator_raise
@@ -266,6 +280,29 @@ This project uses only the Python standard library for tests:
 
 ```bash
 python -m unittest discover -s tests -v
+```
+
+No extra `PYTHONPATH` setup is needed with the root `fault_injection/` layout.
+
+## Build and publish
+
+Build distributions:
+
+```bash
+python -m pip install --upgrade build twine
+python -m build
+```
+
+Upload to TestPyPI:
+
+```bash
+python -m twine upload --repository testpypi dist/*
+```
+
+Upload to PyPI:
+
+```bash
+python -m twine upload dist/*
 ```
 
 ## License

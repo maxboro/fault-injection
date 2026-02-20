@@ -2,7 +2,7 @@
 python -m examples.decorator_raise_nth_multiple
 """
 import random
-from src.fault_injection import raise_at_nth_call
+from fault_injection import raise_at_nth_call
 
 @raise_at_nth_call(n=2, func_id=1)
 def add(a, b):

@@ -2,7 +2,7 @@
 python -m examples.inline_raise_random
 """
 import random
-from src.fault_injection import raise_random_inline
+from fault_injection import raise_random_inline
 
 def add(a, b):
     raise_random_inline(prob_of_raise=0.2)

@@ -1,6 +1,6 @@
 import unittest
 
-from src.fault_injection import (
+from fault_injection import (
     delay,
     delay_inline,
     delay_random,

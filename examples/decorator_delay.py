@@ -3,7 +3,7 @@ python -m examples.decorator_delay
 """
 import random
 import time
-from src.fault_injection import delay
+from fault_injection import delay
 
 @delay(0.5)
 def add_slowed(a, b):
