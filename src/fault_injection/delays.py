@@ -55,18 +55,18 @@ def delay_at_nth_call_inline(
         func_id = 1,
         disable: bool = False
     ) -> None:
-    """Inject a fixed delay at n-th call.
+    """Inject a fixed delay at the n-th call for a given ``func_id``.
 
     Args:
         time_s: Sleep duration in seconds. Must be non-negative.
-        n: Call number to raise.
-        func_id: Function id, can be used to prevent different instances of function use
-            interviening each other.
+        n: 1-based call number at which to inject the delay.
+        func_id: Counter key used to isolate different call sites. Calls that use the same
+            ``func_id`` share the same counter.
         disable: If ``True``, delay is skipped.
-    
+
     Raises:
         ValueError: If ``time_s`` is negative.
-        ValueError: If ``n`` < 1 or not integer.
+        ValueError: If ``n`` is not a positive integer.
     """
     if time_s < 0:
         raise ValueError("delay should have positive time_s")
@@ -89,18 +89,18 @@ def delay_at_nth_call(
         func_id = 1,
         disable: bool = False
     ) -> Decorator:
-    """Return a decorator that injects a fixed delay before function execution.
+    """Return a decorator that injects a fixed delay on the n-th call.
 
     Args:
         time_s: Sleep duration in seconds. Must be non-negative.
-        n: Call number to raise.
-        func_id: Function id, can be used to prevent different instances of function use
-            interviening each other.
+        n: 1-based call number at which to inject the delay.
+        func_id: Counter key used to isolate different decorated functions. Decorators that
+            use the same ``func_id`` share the same counter.
         disable: If ``True``, delay is skipped.
 
     Raises:
         ValueError: If ``time_s`` is negative.
-        ValueError: If ``n`` < 1 or not integer.
+        ValueError: If ``n`` is not a positive integer.
     """
     if time_s < 0:
         raise ValueError("delay should have positive time_s")

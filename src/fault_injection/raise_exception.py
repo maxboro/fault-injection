@@ -43,14 +43,17 @@ def raise_at_nth_call_inline(
         func_id = 1,
         disable: bool = False
     ) -> None:
-    """Raise ``RuntimeError`` at n-th call.
+    """Raise ``RuntimeError`` at the n-th call for a given ``func_id``.
 
     Args:
         msg: Exception message.
-        n: Call number to raise.
-        func_id: Function id, can be used to prevent different instances of function use
-            interviening each other.
+        n: 1-based call number at which to raise.
+        func_id: Counter key used to isolate different call sites. Calls that use the same
+            ``func_id`` share the same counter.
         disable: If ``True``, raising is skipped.
+
+    Raises:
+        ValueError: If ``n`` is not a positive integer.
     """
     if n < 1 or not isinstance(n, int):
         raise ValueError("n should be a positive interger.")
@@ -71,14 +74,17 @@ def raise_at_nth_call(
         func_id = 1,
         disable: bool = False
     ) -> Decorator:
-    """Return a decorator that raise ``RuntimeError`` at n-th call unless disabled.
+    """Return a decorator that raises ``RuntimeError`` on the n-th call.
 
     Args:
         msg: Exception message. This is the first positional argument.
-        n: Call number to raise.
-        func_id: Function id, can be used to prevent decorators of different functions 
-            interviening each other.
+        n: 1-based call number at which to raise.
+        func_id: Counter key used to isolate different decorated functions. Decorators that
+            use the same ``func_id`` share the same counter.
         disable: If ``True``, no exception is injected and the function executes.
+
+    Raises:
+        ValueError: If ``n`` is not a positive integer.
     """
     if n < 1 or not isinstance(n, int):
         raise ValueError("n should be a positive interger.")

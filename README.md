@@ -7,8 +7,10 @@ This project provides small decorators and inline helpers to intentionally injec
 ## Features
 
 - `raise_` and `raise_inline`: deterministic exception injection
+- `raise_at_nth_call` and `raise_at_nth_call_inline`: deterministic exception injection on the n-th call (`func_id`-scoped counters)
 - `raise_random` and `raise_random_inline`: probabilistic exception injection
 - `delay` and `delay_inline`: fixed latency injection
+- `delay_at_nth_call` and `delay_at_nth_call_inline`: fixed latency injection on the n-th call (`func_id`-scoped counters)
 - `delay_random` and `delay_random_inline`: uniform random latency injection
 - `delay_random_norm` and `delay_random_norm_inline`: Gaussian latency injection with clamp at `0`
 
@@ -26,10 +28,14 @@ Import APIs from `src.fault_injection`:
 from src.fault_injection import (
     raise_,
     raise_inline,
+    raise_at_nth_call,
+    raise_at_nth_call_inline,
     raise_random,
     raise_random_inline,
     delay,
     delay_inline,
+    delay_at_nth_call,
+    delay_at_nth_call_inline,
     delay_random,
     delay_random_inline,
     delay_random_norm,
@@ -61,6 +67,30 @@ def do_work():
 
 # Raises RuntimeError("inline failure")
 do_work()
+```
+
+### `raise_at_nth_call`
+
+```python
+from src.fault_injection import raise_at_nth_call
+
+@raise_at_nth_call(msg="raise on third call", n=3, func_id=1)
+def do_work():
+    return "ok"
+
+do_work()  # 1st call: ok
+do_work()  # 2nd call: ok
+do_work()  # 3rd call: raises RuntimeError
+```
+
+### `raise_at_nth_call_inline`
+
+```python
+from src.fault_injection import raise_at_nth_call_inline
+
+def do_work():
+    raise_at_nth_call_inline(msg="raise on second call", n=2, func_id=9)
+    return "ok"
 ```
 
 ### `raise_random`
@@ -106,6 +136,30 @@ from src.fault_injection import delay_inline
 
 def do_work():
     delay_inline(time_s=0.5)
+    return "ok"
+```
+
+### `delay_at_nth_call`
+
+```python
+from src.fault_injection import delay_at_nth_call
+
+@delay_at_nth_call(time_s=0.5, n=3, func_id=1)
+def do_work():
+    return "ok"
+
+do_work()  # 1st call: no extra delay
+do_work()  # 2nd call: no extra delay
+do_work()  # 3rd call: sleeps 0.5s, then returns
+```
+
+### `delay_at_nth_call_inline`
+
+```python
+from src.fault_injection import delay_at_nth_call_inline
+
+def do_work():
+    delay_at_nth_call_inline(time_s=0.5, n=2, func_id=9)
     return "ok"
 ```
 
@@ -158,12 +212,19 @@ def do_work():
 ## Validation behavior
 
 - `raise_random(prob_of_raise=...)` and `raise_random_inline(prob_of_raise=...)` require `0 <= prob_of_raise <= 1`
+- `raise_at_nth_call(n=...)` and `raise_at_nth_call_inline(n=...)` require `n` to be a positive integer
 - `delay(time_s=...)` requires `time_s >= 0`
 - `delay_inline(time_s=...)` requires `time_s >= 0`
+- `delay_at_nth_call(time_s=..., n=...)` and `delay_at_nth_call_inline(time_s=..., n=...)` require `time_s >= 0` and `n` to be a positive integer
 - `delay_random(max_time_s=...)` and `delay_random_inline(max_time_s=...)` require `max_time_s >= 0`
 - `delay_random_norm(mean_time_s=..., std_time_s=...)` and `delay_random_norm_inline(mean_time_s=..., std_time_s=...)` require both `>= 0`
 
 Invalid values raise `ValueError`.
+
+## N-th call counters
+
+`*_at_nth_call*` APIs keep counters on module-level function attributes and key by `func_id`.
+Using the same `func_id` means sharing a counter; use different IDs to isolate behavior across call sites.
 
 ## Disable behavior
 
@@ -183,13 +244,18 @@ From repository root:
 
 ```bash
 python -m examples.decorator_raise
+python -m examples.decorator_raise_nth_multiple
 python -m examples.decorator_raise_random
 python -m examples.decorator_delay
+python -m examples.decorator_delay_nth
 python -m examples.decorator_delay_random
 python -m examples.decorator_delay_random_norm
 python -m examples.inline_raise
+python -m examples.inline_raise_nth
+python -m examples.inline_raise_nth_multiple
 python -m examples.inline_raise_random
 python -m examples.inline_delay
+python -m examples.inline_delay_nth
 python -m examples.inline_delay_random
 python -m examples.inline_delay_random_norm
 ```
