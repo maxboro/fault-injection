@@ -309,4 +309,4 @@ python -m twine upload dist/*
 
 ## License
 
-MIT (see `LICENSE`).
+MIT (see [LICENSE](./LICENSE)).
