@@ -56,7 +56,7 @@ def raise_at_nth_call_inline(
         ValueError: If ``n`` is not a positive integer.
     """
     if n < 1 or not isinstance(n, int):
-        raise ValueError("n should be a positive interger.")
+        raise ValueError("n should be a positive integer.")
 
     if not hasattr(raise_at_nth_call_inline, "n_called_dict"):
         raise_at_nth_call_inline.n_called_dict = {}
@@ -87,7 +87,7 @@ def raise_at_nth_call(
         ValueError: If ``n`` is not a positive integer.
     """
     if n < 1 or not isinstance(n, int):
-        raise ValueError("n should be a positive interger.")
+        raise ValueError("n should be a positive integer.")
 
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         """Wrap ``func`` with deterministic exception injection."""

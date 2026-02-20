@@ -3,7 +3,7 @@ python -m examples.inline_delay_nth
 """
 import random
 import time
-from src.fault_injection import delay_at_nth_call_inline
+from fault_injection import delay_at_nth_call_inline
 
 def add_slowed(a, b):
     delay_at_nth_call_inline(time_s=0.5, n=4)

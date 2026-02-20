@@ -2,7 +2,7 @@
 python -m examples.inline_raise
 """
 import random
-from src.fault_injection import raise_inline
+from fault_injection import raise_inline
 
 def add(a, b):
     raise_inline()
