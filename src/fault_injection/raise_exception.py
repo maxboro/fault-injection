@@ -34,8 +34,69 @@ def raise_(msg: str = "raise_ exception is raised", disable: bool = False) -> De
                 return func(*args, **kwargs)
             raise RuntimeError(msg)
         return wrapper
-
     return decorator
+
+def raise_at_nth_call(
+        msg: str = "raise_at_nth_call exception is raised",
+        n: int = 5,
+        func_id = 1,
+        disable: bool = False
+    ) -> Decorator:
+    """Return a decorator that raise ``RuntimeError`` at n-th call unless disabled.
+
+    Args:
+        msg: Exception message. This is the first positional argument.
+        n: Call number to raise.
+        func_id: Function id, can be used to prevent decorators of different functions 
+            interviening each other.
+        disable: If ``True``, no exception is injected and the function executes.
+    """
+    if n < 1 or not isinstance(n, int):
+        raise ValueError("n should be a positive interger.")
+
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
+        """Wrap ``func`` with deterministic exception injection."""
+        @wraps(func)
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
+            if not hasattr(raise_at_nth_call, "n_called_dict"):
+                raise_at_nth_call.n_called_dict = {}
+
+            if func_id not in raise_at_nth_call.n_called_dict.keys():
+                raise_at_nth_call.n_called_dict[func_id] = 0
+            raise_at_nth_call.n_called_dict[func_id] += 1
+            if raise_at_nth_call.n_called_dict[func_id] == n and not disable:
+                raise RuntimeError(msg + f"\nFunc id {func_id}")
+            return func(*args, **kwargs)
+        return wrapper
+    return decorator
+
+
+def raise_at_nth_call_inline(
+        msg: str = "raise_at_nth_call_inline exception is raised",
+        n: int = 5,
+        func_id = 1,
+        disable: bool = False
+    ) -> None:
+    """Raise ``RuntimeError`` at n-th call.
+
+    Args:
+        msg: Exception message.
+        n: Call number to raise.
+        func_id: Function id, can be used to prevent different instances of function use
+            interviening each other.
+        disable: If ``True``, raising is skipped.
+    """
+    if n < 1 or not isinstance(n, int):
+        raise ValueError("n should be a positive interger.")
+
+    if not hasattr(raise_at_nth_call_inline, "n_called_dict"):
+        raise_at_nth_call_inline.n_called_dict = {}
+
+    if func_id not in raise_at_nth_call_inline.n_called_dict.keys():
+        raise_at_nth_call_inline.n_called_dict[func_id] = 0
+    raise_at_nth_call_inline.n_called_dict[func_id] += 1
+    if raise_at_nth_call_inline.n_called_dict[func_id] == n and not disable:
+        raise RuntimeError(msg + f"\nFunc id {func_id}")
 
 
 def raise_random_inline(
@@ -89,5 +150,4 @@ def raise_random(
                     raise RuntimeError(msg)
             return func(*args, **kwargs)
         return wrapper
-
     return decorator
